@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Responsive Blog Card Slider </title>
+  <meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.min.css'><link rel="stylesheet" href="./style.css">
+
+<script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
+  <script type="module"
+  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+</script>
+    <script type="module">
+  const modelViewer1 = document.querySelector('#animation-demo');
+  const lines = modelViewer1.querySelectorAll('line');
+  let baseRect;
+  let noseRect;
+  let hoofRect;
+  let tailRect;
+              
+  function onResize(){
+  baseRect = modelViewer1.getBoundingClientRect();
+  noseRect = document.querySelector('#nose').getBoundingClientRect();
+  hoofRect = document.querySelector('#hoof').getBoundingClientRect();
+  tailRect = document.querySelector('#tail').getBoundingClientRect();
+   }
+            
+              window.addEventListener("resize", onResize);
+            
+              modelViewer1.addEventListener('ar-status', onResize);
+            
+              modelViewer1.addEventListener('load', () => {
+                onResize();
+                // update svg
+                function drawLine(svgLine, name, rect) {
+                  const hotspot = modelViewer1.queryHotspot('hotspot-' + name);
+                  svgLine.setAttribute('x1', hotspot.canvasPosition.x);
+                  svgLine.setAttribute('y1', hotspot.canvasPosition.y);
+                  svgLine.setAttribute('x2', (rect.left + rect.right) / 2 - baseRect.left);
+                  svgLine.setAttribute('y2', rect.top - baseRect.top);
+                }
+            
+                // use requestAnimationFrame to update with renderer
+                const startSVGRenderLoop = () => {
+                  drawLine(lines[0], 'nose', noseRect);
+                  drawLine(lines[1], 'hoof', hoofRect);
+                  drawLine(lines[2], 'tail', tailRect);
+                  requestAnimationFrame(startSVGRenderLoop);
+                };
+            
+                startSVGRenderLoop();
+              });
+            </script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="blog-slider">
+  <div class="blog-slider__wrp swiper-wrapper">
+    <div class="blog-slider__item swiper-slide">
+      <div class="blog-slider__img">
+        <model-viewer src="https://cdn.glitch.global/58b0bafd-b161-4922-9dd9-2d259382fe2f/coco%20(1).glb?v=1717064270512"
+                          ios-src="https://cdn.glitch.global/58b0bafd-b161-4922-9dd9-2d259382fe2f/coco.usdz?v=1717064261378"
+                          poster=""
+                          skybox-image="https://cdn.glitch.global/58b0bafd-b161-4922-9dd9-2d259382fe2f/quarry_cloudy_2k.png?v=1717064987495"
+                          skybox-height="2m"
+                          skybox-size="2"
+                          shadow-intensity="1"
+                          camera-controls
+                          auto-rotate ar>
+            </model-viewer>
+        
+      </div>
+      <div class="blog-slider__content">
+        <span class="blog-slider__code">Envidox WebXR viewer</span>
+        <div class="blog-slider__title">Handcrafted Shiva Linga</div>
+        <div class="blog-slider__text">Experience The Handcrafted Coconut Shell Products in Full 3D View and also in your room with AR </div>
+        <a href="#" class="blog-slider__button">Buy Now</a>
+      </div>
+    </div>
+    
+    
+
+    
+  </div>
+  <div class="blog-slider__pagination"></div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/js/swiper.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
